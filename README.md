@@ -1,2 +1,2 @@
 # edurankai.com
-Informaational and career website
+Informational and career website
