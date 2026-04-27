@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#fff;color:#111;line-height:1.6;font-size:15px;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  /* NAV */
+  nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #e8e8e8;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;height:60px}
+  .nav-logo{font-size:17px;font-weight:700;letter-spacing:-0.3px;color:#0a0a0a}
+  .nav-logo span{color:#4f46e5}
+  .nav-links{display:flex;gap:28px;font-size:13.5px;color:#555}
+  .nav-links a:hover{color:#0a0a0a}
+  .nav-cta{background:#111;color:#fff;font-size:13px;padding:8px 18px;border-radius:8px;font-weight:500;cursor:pointer;border:none}
+  .nav-cta:hover{background:#222}
+  /* HERO */
+  .hero{padding:80px 5vw 60px;max-width:900px;margin:0 auto;text-align:center}
+  .hero-badge{display:inline-flex;align-items:center;gap:6px;background:#f0efff;color:#4f46e5;font-size:12px;font-weight:600;padding:5px 14px;border-radius:100px;margin-bottom:24px;letter-spacing:0.3px}
+  .hero-badge .dot{width:6px;height:6px;background:#4f46e5;border-radius:50%}
+  .hero h1{font-size:clamp(32px,5vw,52px);font-weight:800;letter-spacing:-1.5px;line-height:1.1;color:#0a0a0a;margin-bottom:20px}
+  .hero h1 span{background:linear-gradient(135deg,#4f46e5,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .hero p{font-size:17px;color:#555;max-width:560px;margin:0 auto 36px;line-height:1.7}
+  .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .btn-primary{background:#111;color:#fff;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:background 0.2s}
+  .btn-primary:hover{background:#222}
+  .btn-secondary{background:#f5f5f5;color:#111;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none}
+  .btn-secondary:hover{background:#ebebeb}
+  /* STATS */
+  .stats{display:flex;justify-content:center;gap:0;border-top:1px solid #eee;border-bottom:1px solid #eee;margin:0}
+  .stat{padding:28px 40px;text-align:center;border-right:1px solid #eee;flex:1;max-width:220px}
+  .stat:last-child{border-right:none}
+  .stat-num{font-size:28px;font-weight:800;letter-spacing:-1px;color:#0a0a0a}
+  .stat-label{font-size:12px;color:#888;margin-top:2px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px}
+  /* SEARCH + FILTER */
+  .controls{padding:40px 5vw 20px;max-width:1100px;margin:0 auto}
+  .search-bar{display:flex;align-items:center;gap:10px;background:#f7f7f7;border:1px solid #e5e5e5;border-radius:12px;padding:10px 16px;margin-bottom:20px}
+  .search-bar input{flex:1;border:none;background:transparent;font-size:14px;color:#111;outline:none}
+  .search-bar input::placeholder{color:#aaa}
+  .search-icon{color:#aaa;font-size:15px}
+  .filters{display:flex;gap:8px;flex-wrap:wrap}
+  .filter-btn{padding:7px 16px;border-radius:8px;border:1px solid #e0e0e0;background:#fff;font-size:13px;color:#555;cursor:pointer;font-weight:500;transition:all 0.15s}
+  .filter-btn:hover,.filter-btn.active{background:#111;color:#fff;border-color:#111}
+  /* SECTIONS */
+  .section-label{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#999;margin-bottom:12px;padding-top:8px}
+  /* JOB GRID */
+  .jobs-wrapper{padding:0 5vw 60px;max-width:1100px;margin:0 auto}
+  .dept-group{margin-bottom:40px}
+  .dept-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #f0f0f0}
+  .dept-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+  .dept-title{font-size:15px;font-weight:700;color:#0a0a0a}
+  .dept-count{font-size:12px;color:#888;background:#f5f5f5;padding:2px 8px;border-radius:100px;font-weight:500}
+  .jobs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+  .job-card{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:18px 20px;cursor:pointer;transition:all 0.15s;position:relative;overflow:hidden}
+  .job-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;border-radius:3px 0 0 3px}
+  .job-card:hover{border-color:#c7c7c7;box-shadow:0 4px 20px rgba(0,0,0,0.06);transform:translateY(-1px)}
+  .job-title{font-size:14px;font-weight:600;color:#0a0a0a;margin-bottom:6px}
+  .job-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .job-tag{font-size:11px;padding:3px 9px;border-radius:6px;font-weight:500}
+  .tag-level{background:#f0efff;color:#4f46e5}
+  .tag-func{background:#f0faf5;color:#059669}
+  .tag-dept{background:#fff7ed;color:#c2410c}
+  .apply-row{margin-top:14px;padding-top:12px;border-top:1px solid #f5f5f5;display:flex;align-items:center;justify-content:space-between}
+  .apply-link{font-size:12px;font-weight:600;color:#4f46e5;display:flex;align-items:center;gap:4px}
+  .apply-link:hover{color:#4338ca}
+  .apply-link svg{width:12px;height:12px}
+  .remote-badge{font-size:11px;color:#888;display:flex;align-items:center;gap:4px}
+  /* LEVEL COLORS */
+  .lv-intern::before{background:#818cf8}
+  .lv-junior::before{background:#34d399}
+  .lv-mid::before{background:#fbbf24}
+  .lv-senior::before{background:#f87171}
+  .lv-lead::before{background:#a78bfa}
+  .lv-clevel::before{background:#0a0a0a}
+  /* CTA BOTTOM */
+  .cta-section{background:#0a0a0a;color:#fff;padding:64px 5vw;text-align:center}
+  .cta-section h2{font-size:clamp(24px,3vw,36px);font-weight:800;letter-spacing:-1px;margin-bottom:12px}
+  .cta-section p{color:#888;font-size:15px;margin-bottom:28px}
+  .cta-section a{display:inline-block;background:#4f46e5;color:#fff;padding:13px 30px;border-radius:10px;font-weight:600;font-size:14px}
+  .cta-section a:hover{background:#4338ca}
+  /* FOOTER */
+  footer{background:#f9f9f9;border-top:1px solid #eee;padding:24px 5vw;display:flex;align-items:center;justify-content:space-between;flex-wrap:gap}
+  footer p{font-size:13px;color:#aaa}
+  /* RESPONSIVE */
+  @media(max-width:640px){
+    .stats{flex-wrap:wrap}.stat{min-width:50%;border-right:none;border-bottom:1px solid #eee}
+    .nav-links{display:none}
+    .hero{padding:50px 5vw 40px}
+    .jobs-grid{grid-template-columns:1fr}
+  }
+  /* HIDDEN */
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Edurank<span>AI</span></div>
+  <div class="nav-links">
+    <a href="#">About</a>
+    <a href="#">Careers</a>
+    <a href="#">Research</a>
+    <a href="#">Contact</a>
+  </div>
+  <button class="nav-cta" onclick="document.getElementById('jobs-start').scrollIntoView({behavior:'smooth'})">View Openings</button>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge"><div class="dot"></div>We're hiring across AI, Quantum & more</div>
+  <h1>Build the future of<br><span>intelligent systems</span></h1>
+  <p>Join EduRankAI — an ambitious team working on AI, Quantum Computing, Safety, and Human-Centered Intelligence. Remote-first. Mission-driven.</p>
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="document.getElementById('jobs-start').scrollIntoView({behavior:'smooth'})">Explore Roles</button>
+    <button class="btn-secondary" onclick="window.open('https://forms.gle/YOUR_FORM_LINK','_blank')">Submit Application</button>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-num">150+</div><div class="stat-label">Open Roles</div></div>
+  <div class="stat"><div class="stat-num">12+</div><div class="stat-label">Departments</div></div>
+  <div class="stat"><div class="stat-num">6</div><div class="stat-label">Career Levels</div></div>
+  <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Remote-First</div></div>
+</div>
+
+<div class="controls" id="jobs-start">
+  <div class="search-bar">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search roles, departments, functions..." oninput="filterJobs()">
+  </div>
+  <div class="filters">
+    <button class="filter-btn active" onclick="setFilter('all',this)">All Levels</button>
+    <button class="filter-btn" onclick="setFilter('intern',this)">Intern</button>
+    <button class="filter-btn" onclick="setFilter('junior',this)">Junior</button>
+    <button class="filter-btn" onclick="setFilter('mid',this)">Mid</button>
+    <button class="filter-btn" onclick="setFilter('senior',this)">Senior</button>
+    <button class="filter-btn" onclick="setFilter('lead',this)">Lead</button>
+    <button class="filter-btn" onclick="setFilter('c-level',this)">C-Level</button>
+  </div>
+</div>
+
+<div class="jobs-wrapper" id="jobsWrapper"></div>
+
+<div class="cta-section">
+  <h2>Don't see your role?</h2>
+  <p>We're growing fast. Submit your profile and we'll match you to the right opportunity.</p>
+  <a href="https://forms.gle/YOUR_FORM_LINK" target="_blank">Submit Open Application →</a>
+</div>
+
+<footer>
+  <p>© 2025 EduRankAI · <a href="http://www.edurankai.in" style="color:#aaa">edurankai.in</a></p>
+  <p style="font-size:12px;color:#ccc">AI · Quantum · Safety · Research</p>
+</footer>
+
+<script>
+const FORM_LINK = "https://forms.gle/YOUR_FORM_LINK";
+
+const departments = [
+  {
+    id:"ai",name:"AI / Model",icon:"🤖",color:"#818cf8",
+    roles:[
+      {title:"Chief AI Officer",level:"C-Level",func:"AI vision & strategy"},
+      {title:"AI Systems Architect",level:"Lead",func:"Full AI system design"},
+      {title:"Senior ML Engineer",level:"Senior",func:"Model optimization & scaling"},
+      {title:"Inference Engineer",level:"Senior",func:"Serving & latency optimization"},
+      {title:"Model Compression Engineer",level:"Senior",func:"Quantization & pruning"},
+      {title:"AI Evaluation Scientist",level:"Senior",func:"Advanced benchmarking"},
+      {title:"Applied AI Engineer",level:"Mid",func:"RAG systems & orchestration"},
+      {title:"ML Engineer",level:"Mid",func:"Model tuning"},
+      {title:"Tokenization Engineer",level:"Mid",func:"Token efficiency optimization"},
+      {title:"EvalOps Engineer",level:"Mid",func:"Continuous evaluation pipelines"},
+      {title:"RLHF Coordinator",level:"Mid",func:"Human feedback systems"},
+      {title:"Multi-modal Engineer",level:"Mid",func:"Vision/audio/text handling"},
+      {title:"AI Debugging Engineer",level:"Mid",func:"Failure diagnosis"},
+      {title:"Prompt Engineer",level:"Junior",func:"Prompt design"},
+      {title:"Embedding Engineer",level:"Junior",func:"Vector embeddings"},
+      {title:"AI Evaluation Analyst",level:"Junior",func:"Model evaluation"},
+      {title:"Prompt Tester",level:"Intern",func:"Edge-case prompt testing"},
+      {title:"AI Evaluation Intern",level:"Intern",func:"Benchmark support"},
+    ]
+  },
+  {
+    id:"data",name:"Data & Statistics",icon:"📊",color:"#34d399",
+    roles:[
+      {title:"Chief Data Officer",level:"C-Level",func:"Data governance & vision"},
+      {title:"Data Lead",level:"Lead",func:"Data strategy & flywheel"},
+      {title:"Data Strategy Lead",level:"Lead",func:"Organic data flywheel"},
+      {title:"Senior Data Scientist",level:"Senior",func:"Advanced modeling"},
+      {title:"Applied Statistician",level:"Senior",func:"Inference & experimentation"},
+      {title:"Evaluation Scientist",level:"Senior",func:"A/B testing & metrics"},
+      {title:"Data Governance Lead",level:"Senior",func:"Data policies"},
+      {title:"Data Platform Engineer",level:"Senior",func:"Data infrastructure"},
+      {title:"Data Engineer",level:"Mid",func:"Pipelines"},
+      {title:"Data Scientist",level:"Mid",func:"Modeling"},
+      {title:"Behavioral Data Scientist",level:"Mid",func:"Behavioral insights"},
+      {title:"Instrumentation Engineer",level:"Mid",func:"Tracking & instrumentation"},
+      {title:"Metrics Engineer",level:"Mid",func:"KPI definition"},
+      {title:"Data Steward",level:"Mid",func:"Ownership & governance"},
+      {title:"Data Lineage Engineer",level:"Mid",func:"Data flow tracking"},
+      {title:"Data Analyst",level:"Junior",func:"Insights & dashboards"},
+      {title:"Data QA Analyst",level:"Junior",func:"Validation"},
+      {title:"Sampling Analyst",level:"Junior",func:"Dataset quality"},
+      {title:"Data Annotator",level:"Intern",func:"Data labeling"},
+      {title:"Data QA Intern",level:"Intern",func:"Data validation"},
+      {title:"Data Intern",level:"Intern",func:"Cleaning & support"},
+    ]
+  },
+  {
+    id:"infra",name:"Infrastructure",icon:"⚙️",color:"#fbbf24",
+    roles:[
+      {title:"CTO",level:"C-Level",func:"Technology direction"},
+      {title:"Infra Architect",level:"Lead",func:"Architecture design"},
+      {title:"ML Systems Engineer",level:"Senior",func:"Distributed systems & scaling"},
+      {title:"Senior Backend Engineer",level:"Senior",func:"Scalable APIs"},
+      {title:"Site Reliability Engineer",level:"Senior",func:"Uptime & reliability"},
+      {title:"Security Engineer",level:"Senior",func:"System security"},
+      {title:"Cloud Engineer",level:"Mid",func:"Infrastructure"},
+      {title:"Database Engineer",level:"Mid",func:"Storage systems"},
+      {title:"DevOps/MLOps Engineer",level:"Mid",func:"Deployment pipelines"},
+      {title:"GPU Cluster Operator",level:"Mid",func:"Compute management"},
+      {title:"Observability Engineer",level:"Mid",func:"Monitoring & logging"},
+      {title:"Cost Optimization Engineer",level:"Mid",func:"Infrastructure cost control"},
+      {title:"Release Engineer",level:"Mid",func:"Deployment cycles"},
+      {title:"Incident Response Engineer",level:"Mid",func:"Failure handling"},
+      {title:"Backend Engineer",level:"Junior",func:"APIs"},
+      {title:"DevOps Engineer",level:"Junior",func:"Deployment"},
+      {title:"Cloud Support Engineer",level:"Junior",func:"Infra support"},
+      {title:"DevOps Intern",level:"Intern",func:"Support"},
+    ]
+  },
+  {
+    id:"product",name:"Product & UX",icon:"🎨",color:"#f87171",
+    roles:[
+      {title:"CPO",level:"C-Level",func:"Product vision"},
+      {title:"Head of Product",level:"Lead",func:"Product strategy"},
+      {title:"Product Manager",level:"Senior",func:"Roadmap & execution"},
+      {title:"UX Research Lead",level:"Senior",func:"User insights"},
+      {title:"Conversation Designer",level:"Senior",func:"AI interaction design"},
+      {title:"Product Engineer",level:"Mid",func:"Feature development"},
+      {title:"UX Researcher",level:"Mid",func:"User insights"},
+      {title:"Information Architect",level:"Mid",func:"Structure & flows"},
+      {title:"Frontend Engineer",level:"Junior",func:"UI development"},
+      {title:"Product Analyst",level:"Junior",func:"Feature insights"},
+      {title:"UX Analyst",level:"Junior",func:"User behavior"},
+      {title:"UX Intern",level:"Intern",func:"Research support"},
+      {title:"Product Intern",level:"Intern",func:"Feature support"},
+    ]
+  },
+  {
+    id:"security",name:"Security & AI Safety",icon:"🛡️",color:"#a78bfa",
+    roles:[
+      {title:"CISO",level:"C-Level",func:"Security leadership"},
+      {title:"Chief AI Safety Officer",level:"C-Level",func:"Org-wide safety vision"},
+      {title:"Chief Policy Officer",level:"C-Level",func:"Policy direction"},
+      {title:"Chief Ethics Officer",level:"C-Level",func:"Ethics governance"},
+      {title:"Chief Risk Officer",level:"C-Level",func:"Risk governance"},
+      {title:"Safety Lead",level:"Lead",func:"Safety strategy"},
+      {title:"Security Lead",level:"Lead",func:"Org security strategy"},
+      {title:"Policy Lead",level:"Lead",func:"Policy strategy"},
+      {title:"AI Safety Engineer",level:"Senior",func:"Guardrails design"},
+      {title:"Alignment Research Scientist",level:"Senior",func:"Alignment methods"},
+      {title:"Privacy Engineer",level:"Senior",func:"Data protection"},
+      {title:"Compliance Officer",level:"Senior",func:"Regulation adherence"},
+      {title:"AI Legal Counsel",level:"Senior",func:"Legal compliance"},
+      {title:"Security Engineer",level:"Mid",func:"System protection"},
+      {title:"Privacy Engineer",level:"Mid",func:"Data privacy"},
+      {title:"Policy Analyst",level:"Mid",func:"Policy analysis"},
+      {title:"Threat Intelligence Analyst",level:"Mid",func:"Threat tracking"},
+      {title:"IAM Engineer",level:"Mid",func:"Access control"},
+      {title:"AI Policy Analyst",level:"Mid",func:"Regulation tracking"},
+      {title:"Security Analyst",level:"Junior",func:"Threat monitoring"},
+      {title:"Compliance Analyst",level:"Junior",func:"Policy checks"},
+      {title:"AI Safety Intern",level:"Intern",func:"Guardrail testing"},
+      {title:"Security Intern",level:"Intern",func:"Monitoring"},
+      {title:"Policy Intern",level:"Intern",func:"Regulation research"},
+    ]
+  },
+  {
+    id:"quantum",name:"Quantum Systems",icon:"⚛️",color:"#22d3ee",
+    roles:[
+      {title:"Quantum Director",level:"C-Level",func:"Quantum vision"},
+      {title:"Quantum Systems Lead",level:"Lead",func:"Platform architecture"},
+      {title:"Quantum Software Engineer",level:"Senior",func:"Quantum system development"},
+      {title:"Quantum Algorithm Researcher",level:"Senior",func:"Algorithm design"},
+      {title:"Quantum Simulation Scientist",level:"Senior",func:"Simulation models"},
+      {title:"Quantum Compiler Engineer",level:"Mid",func:"Circuit compilation"},
+      {title:"Quantum Simulation Engineer",level:"Mid",func:"Simulation builds"},
+      {title:"Quantum Error Correction Specialist",level:"Mid",func:"Noise handling"},
+      {title:"Quantum Hardware Interface Engineer",level:"Mid",func:"Hardware communication"},
+      {title:"Quantum Control Systems Engineer",level:"Mid",func:"Qubit control"},
+      {title:"Quantum Optimization Researcher",level:"Mid",func:"Optimization algorithms"},
+      {title:"Quantum Cryptography Specialist",level:"Mid",func:"Quantum security"},
+      {title:"Quantum Software Engineer (Jr)",level:"Junior",func:"Quantum code support"},
+      {title:"Quantum Research Assistant",level:"Junior",func:"Algorithm research"},
+      {title:"Quantum Intern",level:"Intern",func:"Support & exploration"},
+    ]
+  },
+  {
+    id:"research",name:"Innovation & Research",icon:"🔬",color:"#fb923c",
+    roles:[
+      {title:"Chief Scientist",level:"C-Level",func:"Research direction"},
+      {title:"Chief Innovation Officer",level:"C-Level",func:"Innovation strategy"},
+      {title:"Principal Research Scientist",level:"Lead",func:"Advanced theory & breakthroughs"},
+      {title:"Innovation Lead",level:"Lead",func:"Prototype translation"},
+      {title:"Engineering Director",level:"Lead",func:"Execution leadership"},
+      {title:"ASI Research Director",level:"Lead",func:"ASI roadmap"},
+      {title:"Senior Research Scientist",level:"Senior",func:"Model & quantum research"},
+      {title:"Technology Strategist",level:"Senior",func:"Future tech direction"},
+      {title:"Cognitive Architect",level:"Senior",func:"General intelligence design"},
+      {title:"AI Alignment Scientist",level:"Senior",func:"Safety & alignment"},
+      {title:"Research Engineer",level:"Mid",func:"Prototype implementation"},
+      {title:"Prototyping Engineer",level:"Mid",func:"Rapid builds"},
+      {title:"Multi-agent Systems Engineer",level:"Mid",func:"Agent ecosystems"},
+      {title:"Research Analyst",level:"Junior",func:"Literature & benchmarking"},
+      {title:"Innovation Analyst",level:"Junior",func:"Idea validation"},
+      {title:"Research Intern",level:"Intern",func:"Experiment support"},
+      {title:"ASI Research Intern",level:"Intern",func:"ASI support"},
+      {title:"Innovation Intern",level:"Intern",func:"Exploration support"},
+    ]
+  },
+  {
+    id:"psychology",name:"Psychology & Human Factors",icon:"🧠",color:"#e879f9",
+    roles:[
+      {title:"Chief Behavioral Officer",level:"C-Level",func:"Human-centered strategy"},
+      {title:"Human Factors Lead",level:"Lead",func:"System behavior design"},
+      {title:"Human Impact Lead",level:"Lead",func:"Societal strategy"},
+      {title:"AI Behavior Specialist",level:"Senior",func:"Human-AI alignment"},
+      {title:"Human-AI Interaction Specialist",level:"Senior",func:"Trust systems"},
+      {title:"Cognitive Scientist",level:"Senior",func:"Human cognition"},
+      {title:"Behavioral Scientist",level:"Senior",func:"Decision modeling"},
+      {title:"Cognitive Scientist",level:"Mid",func:"Human cognition"},
+      {title:"UX Psychologist",level:"Mid",func:"User interaction"},
+      {title:"Behavioral Economist",level:"Mid",func:"Decision patterns"},
+      {title:"Learning Scientist",level:"Mid",func:"Education optimization"},
+      {title:"Attention Researcher",level:"Mid",func:"User focus patterns"},
+      {title:"Misinformation Researcher",level:"Senior",func:"Content risk"},
+      {title:"Behavioral Analyst",level:"Junior",func:"User patterns"},
+      {title:"UX Psychologist (Jr)",level:"Junior",func:"Interaction behavior"},
+      {title:"Human-AI Researcher",level:"Junior",func:"Trust research"},
+      {title:"Behavior Intern",level:"Intern",func:"User studies"},
+      {title:"UX Intern",level:"Intern",func:"Research support"},
+    ]
+  },
+  {
+    id:"hr",name:"HR & People",icon:"👥",color:"#4ade80",
+    roles:[
+      {title:"CHRO",level:"C-Level",func:"People leadership"},
+      {title:"Head of HR",level:"Lead",func:"HR strategy"},
+      {title:"HRBP",level:"Senior",func:"Team alignment"},
+      {title:"Senior Recruiter",level:"Senior",func:"Hiring strategy"},
+      {title:"HR Ops",level:"Mid",func:"HR processes"},
+      {title:"Recruiter",level:"Mid",func:"Talent acquisition"},
+      {title:"Talent Sourcer",level:"Junior",func:"Candidate sourcing"},
+      {title:"HR Analyst",level:"Junior",func:"HR metrics"},
+      {title:"HR Intern",level:"Intern",func:"Screening support"},
+    ]
+  },
+  {
+    id:"legal",name:"Legal, Finance & Strategy",icon:"⚖️",color:"#94a3b8",
+    roles:[
+      {title:"Chief Legal Officer",level:"C-Level",func:"Legal leadership"},
+      {title:"Chief Financial Officer",level:"C-Level",func:"Financial leadership"},
+      {title:"Chief Strategy Officer",level:"C-Level",func:"Strategic vision"},
+      {title:"Chief Operating Officer",level:"C-Level",func:"Execution leadership"},
+      {title:"Chief Revenue Officer",level:"C-Level",func:"Revenue leadership"},
+      {title:"Head of Legal",level:"Lead",func:"Org-wide legal"},
+      {title:"Finance Head",level:"Lead",func:"Finance strategy"},
+      {title:"Strategy Head",level:"Lead",func:"Org direction"},
+      {title:"Operations Head",level:"Lead",func:"Scaling operations"},
+      {title:"Growth Head",level:"Lead",func:"Scaling revenue"},
+      {title:"General Counsel",level:"Senior",func:"Legal strategy"},
+      {title:"Tax Specialist",level:"Senior",func:"Tax optimization"},
+      {title:"Business Strategist",level:"Senior",func:"Growth strategy"},
+      {title:"Program Manager",level:"Senior",func:"Cross-team delivery"},
+      {title:"Revenue Manager",level:"Senior",func:"Revenue strategy"},
+      {title:"Corporate Lawyer",level:"Mid",func:"Legal structuring"},
+      {title:"Financial Analyst",level:"Mid",func:"Financial planning"},
+      {title:"Strategy Manager",level:"Mid",func:"Execution plans"},
+      {title:"Operations Manager",level:"Mid",func:"Execution"},
+      {title:"Business Development Manager",level:"Mid",func:"Partnerships"},
+      {title:"Legal Associate",level:"Junior",func:"Contracts & filings"},
+      {title:"Business Analyst",level:"Junior",func:"Market insights"},
+      {title:"Accountant",level:"Junior",func:"Bookkeeping"},
+      {title:"Sales Executive",level:"Junior",func:"Customer acquisition"},
+      {title:"Legal Intern",level:"Intern",func:"Contract review support"},
+      {title:"Finance Intern",level:"Intern",func:"Basic accounting"},
+      {title:"Business Intern",level:"Intern",func:"Market research"},
+      {title:"Operations Intern",level:"Intern",func:"Support ops"},
+    ]
+  },
+  {
+    id:"growth",name:"Growth & Marketing",icon:"📈",color:"#f59e0b",
+    roles:[
+      {title:"Growth Head",level:"Lead",func:"Scaling user acquisition"},
+      {title:"Growth Engineer",level:"Senior",func:"Scaling acquisition"},
+      {title:"Experimentation Lead",level:"Senior",func:"A/B systems"},
+      {title:"Marketing Strategist",level:"Senior",func:"Campaign planning"},
+      {title:"Growth Engineer",level:"Mid",func:"Growth engineering"},
+      {title:"Marketing Analyst",level:"Mid",func:"Campaign execution"},
+      {title:"SEO Engineer",level:"Mid",func:"Search optimization"},
+      {title:"Gamification Designer",level:"Mid",func:"Engagement design"},
+      {title:"Community Manager",level:"Mid",func:"Community building"},
+      {title:"Growth Analyst",level:"Junior",func:"User growth tracking"},
+      {title:"Marketing Analyst",level:"Junior",func:"Campaign insights"},
+      {title:"SEO Specialist",level:"Junior",func:"Search optimization"},
+    ]
+  },
+  {
+    id:"formdb",name:"Form & Database Systems",icon:"🗄️",color:"#6366f1",
+    roles:[
+      {title:"Database Intern",level:"Intern",func:"Schema design & table management"},
+      {title:"Backend Intern",level:"Intern",func:"Build APIs & connect DB"},
+      {title:"Frontend Intern",level:"Intern",func:"Form builder UI & rendering"},
+      {title:"Dashboard Intern",level:"Intern",func:"Admin panel & data tables"},
+      {title:"QA Intern",level:"Intern",func:"System testing & validation"},
+      {title:"DevOps Intern",level:"Intern",func:"Deploy app & manage server"},
+      {title:"Product Intern",level:"Intern",func:"Feature definition & UX support"},
+    ]
+  },
+];
+
+let activeFilter = 'all';
+
+function levelClass(l){
+  const m={'Intern':'lv-intern','Junior':'lv-junior','Mid':'lv-mid','Senior':'lv-senior','Lead':'lv-lead','C-Level':'lv-clevel'};
+  return m[l]||'lv-mid';
+}
+
+function renderJobs(){
+  const query=(document.getElementById('searchInput')||{value:''}).value.toLowerCase();
+  const wrapper=document.getElementById('jobsWrapper');
+  wrapper.innerHTML='';
+  let totalVisible=0;
+  departments.forEach(dept=>{
+    const filtered=dept.roles.filter(r=>{
+      const matchLevel=activeFilter==='all'||r.level.toLowerCase()===activeFilter;
+      const matchSearch=!query||r.title.toLowerCase().includes(query)||r.func.toLowerCase().includes(query)||dept.name.toLowerCase().includes(query)||r.level.toLowerCase().includes(query);
+      return matchLevel&&matchSearch;
+    });
+    if(!filtered.length)return;
+    totalVisible+=filtered.length;
+    const grp=document.createElement('div');
+    grp.className='dept-group';
+    grp.innerHTML=`<div class="dept-header">
+      <div class="dept-icon" style="background:${dept.color}22">${dept.icon}</div>
+      <span class="dept-title">${dept.name}</span>
+      <span class="dept-count">${filtered.length} roles</span>
+    </div>
+    <div class="jobs-grid">${filtered.map(r=>`
+      <div class="job-card ${levelClass(r.level)}">
+        <div class="job-title">${r.title}</div>
+        <div class="job-meta">
+          <span class="job-tag tag-level">${r.level}</span>
+          <span class="job-tag tag-func">${r.func}</span>
+        </div>
+        <div class="apply-row">
+          <span class="remote-badge">🌐 Remote</span>
+          <a class="apply-link" href="${FORM_LINK}" target="_blank">Apply now <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg></a>
+        </div>
+      </div>`).join('')}
+    </div>`;
+    wrapper.appendChild(grp);
+  });
+  if(!totalVisible){
+    wrapper.innerHTML=`<div style="text-align:center;padding:60px 0;color:#aaa;font-size:15px">No roles found. Try a different search or filter.</div>`;
+  }
+}
+
+function filterJobs(){renderJobs();}
+
+function setFilter(f,btn){
+  activeFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderJobs();
+}
+
+renderJobs();
+</script>
+</body>
+</html>
